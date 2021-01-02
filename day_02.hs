@@ -21,8 +21,8 @@ validatePosition (pw, c, low, high) = result
 main :: IO ()
 main = do
   entries <- map parse . lines <$> readFile "day_02_input.txt"
-  let result = sum [if validateAmount entry then 1 else 0 | entry <- entries]
+  let result = length (filter validateAmount entries)
   print $ "Part 1: " ++ (show result)
 
-  let result2 = sum [if validatePosition entry then 1 else 0 | entry <- entries]
+  let result2 = length (filter validatePosition entries)
   print $ "Part 2: " ++ (show result2)
