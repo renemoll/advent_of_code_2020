@@ -1,23 +1,13 @@
-import Data.Char
 import Data.List
-import Data.List.Split
-
-convertToBinary :: Char -> Char
-convertToBinary 'F' = '0'
-convertToBinary 'B' = '1'
-convertToBinary 'L' = '0'
-convertToBinary 'R' = '1'
-convertToBinary _ = error "Unknown character"
 
 fromBinary :: [Char] -> Int
 fromBinary "" = 0
-fromBinary input = (2 * (fromBinary (init input))) + digitToInt (last input)
+fromBinary input = sum [if c `elem` "BR" then 2^i else 0 | (c,i) <- zip (reverse input) [0,1..]]
 
 decodeSeat :: String -> Int
 decodeSeat code = row * 8 + col
-  where bin = map convertToBinary code
-        row = fromBinary $ take 7 bin
-        col = fromBinary $ drop 7 bin
+  where row = fromBinary $ take 7 code
+        col = fromBinary $ drop 7 code
 
 findMissing :: [Int] -> Int
 findMissing seats = head missing + 1
