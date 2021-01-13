@@ -1,7 +1,14 @@
 import Data.List.Split
 
-parse :: [Char] -> ([Char], Char, Int, Int)
-parse input = (password, check, low, high)
+data Password = Password {
+  password :: String,
+  check :: Char,
+  low :: Int,
+  high :: Int
+}
+
+parse :: String -> Password
+parse input = Password password check low high
   where [crit, password] = splitOn ": " input
         [limits, checks] = splitOn " " crit
         [lows, highs] = splitOn "-" limits
@@ -9,13 +16,13 @@ parse input = (password, check, low, high)
         low = read lows
         high = read highs
 
-validateAmount :: ([Char], Char, Int, Int) -> Bool
-validateAmount (pw, c, low, high) = result
+validateAmount :: Password -> Bool
+validateAmount (Password pw c low high) = result
   where t = length $ filter (==c) pw
         result = (t >= low) && (t <= high)
 
-validatePosition :: ([Char], Char, Int, Int) -> Bool
-validatePosition (pw, c, low, high) = result
+validatePosition :: Password -> Bool
+validatePosition (Password pw c low high) = result
   where result = ((pw !! (low - 1)) == c) /= ((pw !! (high - 1)) == c)
 
 main :: IO ()
