@@ -1,7 +1,8 @@
--- Note: the result step is in (x,y)
-step :: Int -> Int -> Int -> Int -> [(Int,Int)]
-step right down xlimit ylimit = steps
-  where steps = [(right*x `mod` ylimit, down*x) | x <- [0,1..xlimit], x*down<xlimit]
+
+type Coordinate = (Int, Int)
+
+step :: Int -> Int -> Int -> Int -> [Coordinate]
+step right down xlimit ylimit = [(right*x `mod` ylimit, down*x) | x <- [0,1..xlimit], x*down<xlimit]
 
 encounteredTrees :: [String] -> Int -> Int -> Int
 encounteredTrees input right down = trees
@@ -13,7 +14,7 @@ encounteredTrees input right down = trees
 main :: IO ()
 main = do
   input <- lines <$> readFile "day_03_input.txt"
-  
+
   let part1 = encounteredTrees input 3 1
   print $ "Part 1: " ++ (show part1)
 
